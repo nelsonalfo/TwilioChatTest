@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/home_bg"/>
+
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/landing_logo"
+        android:contentDescription="@string/logo_text"/>
+
+    <TextView
+        android:id="@+id/textViewLine1"
+        style="@style/LoginTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewLogo"
+        android:layout_centerHorizontal="true"
+        android:text="@string/twilio_first_line"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <TextView
+        android:id="@+id/textViewLine2"
+        style="@style/LoginTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewLine1"
+        android:layout_centerHorizontal="true"
+        android:text="@string/twilio_second_line"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTextFields"
+        style="@style/LoginElementSideMargin"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonLogin"
+        android:background="@color/login_tf_group_gray"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/LoginFormLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="7dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/LoginTextEditImage"
+                android:background="@drawable/username_field_bg"
+                android:contentDescription="@string/image_text"/>
+
+            <EditText
+                android:id="@+id/editTextUsername"
+                style="@style/LoginTextEdit"
+                android:layout_width="match_parent"
+                android:hint="@string/username_placeholder"
+                android:imeActionId="100"
+                android:inputType="textPersonName"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonLogin"
+        style="@style/LoginButton"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:background="@color/login_button_background"
+        android:text="@string/login_button_text"/>
+</RelativeLayout>

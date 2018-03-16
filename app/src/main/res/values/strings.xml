@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Twiliochat</string>
+
+    <!-- Strings related to login -->
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_main_chat">General Channel</string>
+    <string name="username_placeholder">username</string>
+    <string name="password_placeholder">password</string>
+    <string name="full_name_placeholder">full name</string>
+    <string name="email_placeholder">email address</string>
+    <string name="twilio_first_line">A simple chat app built using the</string>
+    <string name="twilio_second_line">Twilio IP Messaging API</string>
+    <string name="login_all_fields_required">All fields are required</string>
+    <string name="login_user_progress_message">signing in…</string>
+    <string name="register_user_progress_message">registering user…</string>
+
+    <!-- Strings related to forgot password -->
+    <string name="forgot_password_message">
+        That\'s okay. Just enter your email and we\'ll send you a link to reset your password.
+    </string>
+    <string name="forgot_password_send_button_text">Send</string>
+    <string name="forgot_password_go_back_button_text">\u003c Go back</string>
+    <string name="forgot_password_email_required">
+        You must provide a registered email address to start the recovery process
+    </string>
+    <string name="forgot_password_progress_message">recovering password…</string>
+    <string name="forgot_password_success_message">
+        We have sent you an email to start the password recovery process
+    </string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="logout_text">Logout</string>
+
+    <string name="logout_prompt_message">Are you sure you want to logout?</string>
+    <string name="action_leave_channel">Leave channel</string>
+    <string name="action_delete_channel">Delete channel</string>
+    <string name="message_elipses">Say something</string>
+    <string name="logo_text">logo</string>
+    <string name="login_button_text">Login</string>
+    <string name="register_button_text">Register</string>
+    <string name="forgot_password_button_text">Forgot your password?</string>
+    <string name="create_account_button_text">Create an account</string>
+    <string name="back_to_login_button_text">Back to login</string>
+    <string name="image_text">image</string>
+
+    <string name="default_channel_name">General Channel</string>
+    <string name="default_channel_unique_name">general</string>
+    <string name="new_channel_prompt">Enter a name for the new channel:</string>
+    <string name="generic_error">An error occurred, please try again</string>
+    <string name="message_deletion_forbidden">You cannot delete this channel</string>
+    <string name="loading_channels_message">Loading channel information</string>
+    <string name="channel_name_required_message">Channel name cannot be empty</string>
+    <string name="channel_delete_prompt_message">Are you sure you want to delete this channel?</string>
+    <string name="channel_name_equals_default_name">You cannot create a channel with the default channel\'s name</string>
+
+
+</resources>
