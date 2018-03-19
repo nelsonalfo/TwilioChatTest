@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.view;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -21,9 +21,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.miguelsoler.twiliochattest.connection.SessionManager;
-import com.example.miguelsoler.twiliochattest.listeners.InputOnClickListener;
+import com.example.miguelsoler.twiliochattest.utils.AlertDialogHandler;
+import com.example.miguelsoler.twiliochattest.channels.ChannelManager;
+import com.example.miguelsoler.twiliochattest.chat.ChatClientManager;
+import com.example.miguelsoler.twiliochattest.channels.LoadChannelListener;
+import com.example.miguelsoler.twiliochattest.R;
+import com.example.miguelsoler.twiliochattest.TwilioChatApplication;
 import com.example.miguelsoler.twiliochattest.listeners.TaskCompletionListener;
+import com.example.miguelsoler.twiliochattest.view.adapter.ChannelAdapter;
 import com.twilio.chat.Channel;
 import com.twilio.chat.ChatClient;
 import com.twilio.chat.ChatClientListener;
@@ -38,7 +43,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
     private Context context;
     private Activity mainActivity;
     private Button logoutButton;
-    private Button addChannelButton;
     private ChatClientManager chatClientManager;
     private ListView channelsListView;
     private ChannelAdapter channelAdapter;
@@ -58,7 +62,7 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
             @Override
             public void run() {
                 chatClientManager.shutdown();
-                TwilioChatApplication.get().getChatClientManager().setChatClient(null);
+                TwilioChatApplication.get().getChatClientManager().clearChatClient();
             }
         });
     }
@@ -71,8 +75,7 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -87,7 +90,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
         context = this;
         mainActivity = this;
         logoutButton = findViewById(R.id.buttonLogout);
-        addChannelButton = findViewById(R.id.buttonAddChannel);
         channelsListView = findViewById(R.id.listViewChannels);
 
         chatClientManager = TwilioChatApplication.get().getChatClientManager();
@@ -104,13 +106,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
             @Override
             public void onClick(View v) {
                 promptLogout();
-            }
-        });
-
-        addChannelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddChannelDialog();
             }
         });
 
@@ -290,44 +285,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
         MainChatActivity.this.deleteChannelMenuItem.setVisible(position != 0);
     }
 
-    private void showAddChannelDialog() {
-        String message = getStringResource(R.string.new_channel_prompt);
-
-        AlertDialogHandler.displayInputDialog(message, context, new InputOnClickListener() {
-            @Override
-            public void onClick(String input) {
-                if (input.length() == 0) {
-                    showAlertWithMessage(getStringResource(R.string.channel_name_required_message));
-                    return;
-                }
-
-                createChannelWithName(input);
-            }
-        });
-    }
-
-    private void createChannelWithName(String name) {
-        String defaultChannelName = this.channelManager.getDefaultChannelName().toLowerCase();
-        String trimmedName = name.trim().toLowerCase();
-
-        if (trimmedName.contentEquals(defaultChannelName)) {
-            showAlertWithMessage(getStringResource(R.string.channel_name_equals_default_name));
-            return;
-        }
-
-        this.channelManager.createChannelWithName(name, new StatusListener() {
-            @Override
-            public void onSuccess() {
-                refreshChannels();
-            }
-
-            @Override
-            public void onError(ErrorInfo errorInfo) {
-                showAlertWithMessage(getStringResource(R.string.generic_error));
-            }
-        });
-    }
-
     private void promptChannelDeletion() {
         String message = getStringResource(R.string.channel_delete_prompt_message);
 
@@ -397,7 +354,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SessionManager.getInstance(context).cleanChannel();
                         finish();
                     }
                 });

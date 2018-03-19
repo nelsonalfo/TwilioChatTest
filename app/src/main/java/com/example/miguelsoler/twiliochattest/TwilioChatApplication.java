@@ -2,6 +2,9 @@ package com.example.miguelsoler.twiliochattest;
 
 import android.app.Application;
 
+import com.example.miguelsoler.twiliochattest.chat.ChatClientManager;
+
+
 /****************************************************************************************
  * CREDITOS DE ARCHIVO:_________________________|__________________FECHA__________________
  * | # | DESARROLLADORES

@@ -6,9 +6,12 @@ import android.util.Log;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.miguelsoler.twiliochattest.TwilioChatApplication;
 import com.example.miguelsoler.twiliochattest.listeners.TaskCompletionListener;
 
 import org.json.JSONException;
@@ -28,17 +31,12 @@ import java.util.Map;
  ***************************************************************************************/
 
 public class TokenFetcher {
-    private final Context context;
-    private String token, identity, channel;
-
-    public TokenFetcher(Context context) {
-        this.context = context;
-    }
+    private String token;
 
     public void fetch(final TaskCompletionListener<String, String> listener) {
         String requestUrl = "http://staging.flyersconcierge.com/api/v1.47/twilio_token/16/diegoduncan21@gmail.com";
 
-        StringRequest jsonObjReq = new StringRequest(Request.Method.GET, requestUrl, new Response.Listener<String>() {
+        final StringRequest request = new StringRequest(Request.Method.GET, requestUrl, new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
@@ -47,14 +45,11 @@ public class TokenFetcher {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             token = jsonObject.getString("token");
-                            identity = jsonObject.getString("identity");
-                            channel = jsonObject.getString("channel");
-
-                            SessionManager.getInstance(context).createSession(channel, identity, token);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("TokenFetcher", "JSONException " + String.valueOf(e));
+
                             listener.onError("Failed to parse token JSON response");
                         }
                         Log.e("TokenFetcher", "Success");
@@ -79,13 +74,22 @@ public class TokenFetcher {
                 }) {
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> headers = new HashMap<String, String>();
+                        Map<String, String> headers = new HashMap<>();
                         headers.put("Authorization", "apikey ce3b207d2fde495bb8dcc95753cb49f25acde464");
                         return headers;
                     }
                 };
 
-        jsonObjReq.setShouldCache(false);
-        TokenRequest.getInstance().addToRequestQueue(jsonObjReq);
+        request.setShouldCache(false);
+
+
+        addToRequestQueue(request);
+    }
+
+    private void addToRequestQueue(StringRequest request) {
+        final Context applicationContext = TwilioChatApplication.get().getApplicationContext();
+
+        final RequestQueue requestQueue = Volley.newRequestQueue(applicationContext);
+        requestQueue.add(request);
     }
 }

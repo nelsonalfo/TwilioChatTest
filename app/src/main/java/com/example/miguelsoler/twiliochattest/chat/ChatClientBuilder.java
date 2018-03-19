@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.chat;
 
 import android.content.Context;
 
@@ -17,13 +17,10 @@ public class ChatClientBuilder extends CallbackListener<ChatClient> {
   }
 
   public void build(String token, final TaskCompletionListener<ChatClient, String> listener) {
-    ChatClient.Properties props =new ChatClient.Properties.Builder().createProperties();
+    ChatClient.Properties properties =new ChatClient.Properties.Builder().createProperties();
 
     this.buildListener = listener;
-    ChatClient.create(context.getApplicationContext(),
-        token,
-        props,
-        this);
+    ChatClient.create(context.getApplicationContext(), token, properties, this);
   }
 
 

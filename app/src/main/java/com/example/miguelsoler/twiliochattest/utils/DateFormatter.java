@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;

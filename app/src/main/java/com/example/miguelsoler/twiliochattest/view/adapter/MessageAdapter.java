@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.view.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,6 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.miguelsoler.twiliochattest.R;
+import com.example.miguelsoler.twiliochattest.messages.ChatMessage;
+import com.example.miguelsoler.twiliochattest.messages.StatusMessage;
+import com.example.miguelsoler.twiliochattest.messages.UserMessage;
+import com.example.miguelsoler.twiliochattest.utils.DateFormatter;
 import com.twilio.chat.Message;
 
 import java.util.ArrayList;
@@ -37,6 +42,7 @@ public class MessageAdapter extends BaseAdapter {
     notifyDataSetChanged();
   }
 
+  @SuppressWarnings("unchecked")
   public void addStatusMessage(StatusMessage message) {
     messages.add(message);
     statusMessageSet.add(messages.size() - 1);
@@ -90,9 +96,9 @@ public class MessageAdapter extends BaseAdapter {
         res = R.layout.message;
         convertView = layoutInflater.inflate(res, viewGroup, false);
         ChatMessage message = messages.get(position);
-        TextView textViewMessage = (TextView) convertView.findViewById(R.id.textViewMessage);
-        TextView textViewAuthor = (TextView) convertView.findViewById(R.id.textViewAuthor);
-        TextView textViewDate = (TextView) convertView.findViewById(R.id.textViewDate);
+        TextView textViewMessage = convertView.findViewById(R.id.textViewMessage);
+        TextView textViewAuthor = convertView.findViewById(R.id.textViewAuthor);
+        TextView textViewDate = convertView.findViewById(R.id.textViewDate);
         textViewMessage.setText(message.getMessageBody());
         textViewAuthor.setText(message.getAuthor());
         textViewDate.setText(DateFormatter.getFormattedDateFromISOString(message.getTimeStamp()));
@@ -101,7 +107,7 @@ public class MessageAdapter extends BaseAdapter {
         res = R.layout.status_message;
         convertView = layoutInflater.inflate(res, viewGroup, false);
         ChatMessage status = messages.get(position);
-        TextView textViewStatus = (TextView) convertView.findViewById(R.id.textViewStatusMessage);
+        TextView textViewStatus = convertView.findViewById(R.id.textViewStatusMessage);
         String statusMessage = status.getMessageBody();
         textViewStatus.setText(statusMessage);
         break;

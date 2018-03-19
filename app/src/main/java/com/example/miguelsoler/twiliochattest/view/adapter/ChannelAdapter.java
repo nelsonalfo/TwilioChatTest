@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.view.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.miguelsoler.twiliochattest.R;
 import com.twilio.chat.Channel;
 
 import java.util.Collections;

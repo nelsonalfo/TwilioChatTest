@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.utils;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.miguelsoler.twiliochattest.R;
 import com.example.miguelsoler.twiliochattest.listeners.InputOnClickListener;
 
 

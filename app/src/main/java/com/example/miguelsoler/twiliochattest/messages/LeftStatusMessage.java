@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.messages;
 
 public class LeftStatusMessage extends StatusMessage {
 

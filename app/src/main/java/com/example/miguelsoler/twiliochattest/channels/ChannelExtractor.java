@@ -1,5 +1,6 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.channels;
 
+import com.example.miguelsoler.twiliochattest.view.adapter.CustomChannelComparator;
 import com.example.miguelsoler.twiliochattest.listeners.TaskCompletionListener;
 import com.twilio.chat.CallbackListener;
 import com.twilio.chat.Channel;

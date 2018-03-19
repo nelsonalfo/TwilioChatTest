@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest;
+package com.example.miguelsoler.twiliochattest.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.miguelsoler.twiliochattest.R;
+import com.example.miguelsoler.twiliochattest.messages.JoinedStatusMessage;
+import com.example.miguelsoler.twiliochattest.messages.LeftStatusMessage;
+import com.example.miguelsoler.twiliochattest.messages.StatusMessage;
+import com.example.miguelsoler.twiliochattest.view.adapter.MessageAdapter;
 import com.twilio.chat.CallbackListener;
 import com.twilio.chat.Channel;
 import com.twilio.chat.ChannelListener;
@@ -51,12 +56,12 @@ public class MainChatFragment extends Fragment implements ChannelListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_chat, container, false);
-        sendButton = (Button) view.findViewById(R.id.buttonSend);
-        messagesListView = (ListView) view.findViewById(R.id.listViewMessages);
-        messageTextEdit = (EditText) view.findViewById(R.id.editTextMessage);
+
+        sendButton = view.findViewById(R.id.buttonSend);
+        messagesListView = view.findViewById(R.id.listViewMessages);
+        messageTextEdit = view.findViewById(R.id.editTextMessage);
 
         messageAdapter = new MessageAdapter(mainActivity);
         messagesListView.setAdapter(messageAdapter);
@@ -88,8 +93,10 @@ public class MainChatFragment extends Fragment implements ChannelListener {
 
         if (!currentChannel.equals(this.currentChannel)) {
             setMessageInputEnabled(false);
+
             this.currentChannel = currentChannel;
             this.currentChannel.addListener(this);
+
             if (this.currentChannel.getStatus() == Channel.ChannelStatus.JOINED) {
                 loadMessages(handler);
             } else {
@@ -143,6 +150,7 @@ public class MainChatFragment extends Fragment implements ChannelListener {
         if (messageText.length() == 0) {
             return;
         }
+
         Message.Options newMessage = Message.options().withBody(messageText);
         this.messagesObject.sendMessage(newMessage, null);
         clearTextInput();
