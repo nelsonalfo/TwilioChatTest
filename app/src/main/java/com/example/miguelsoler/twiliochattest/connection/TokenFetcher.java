@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest.Conexion;
+package com.example.miguelsoler.twiliochattest.connection;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /****************************************************************************************
  * CREDITOS DE ARCHIVO:_________________________|__________________FECHA__________________
  * | # | DESARROLLADORES
@@ -27,36 +28,30 @@ import java.util.Map;
  ***************************************************************************************/
 
 public class TokenFetcher {
-    private Context context;
-    String token, identity, channel;
-    SessionManager ssmanager;
+    private final Context context;
+    private String token, identity, channel;
 
     public TokenFetcher(Context context) {
         this.context = context;
-        ssmanager = new SessionManager(this.context);
     }
 
     public void fetch(final TaskCompletionListener<String, String> listener) {
         String requestUrl = "http://staging.flyersconcierge.com/api/v1.47/twilio_token/16/diegoduncan21@gmail.com";
 
-        StringRequest jsonObjReq =
-                new StringRequest(Request.Method.GET, requestUrl, new Response.Listener<String>() {
+        StringRequest jsonObjReq = new StringRequest(Request.Method.GET, requestUrl, new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
-                        token = null;
-                        identity = null;
-                        channel = null;
                         Log.e("TokenFetcher", "StringResponse " + response);
+
                         try {
-                            JSONObject c = new JSONObject(response);
-                            token = c.getString("token");
-                            identity = c.getString("identity");
-                            channel = c.getString("channel");
-                            Log.e("TokenFetcher", "Token " + token);
-                            Log.e("TokenFetcher", "identity " + identity);
-                            Log.e("TokenFetcher", "channel " + channel);
-                            ssmanager.createSession(channel, identity, token);
+                            JSONObject jsonObject = new JSONObject(response);
+                            token = jsonObject.getString("token");
+                            identity = jsonObject.getString("identity");
+                            channel = jsonObject.getString("channel");
+
+                            SessionManager.getInstance(context).createSession(channel, identity, token);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("TokenFetcher", "JSONException " + String.valueOf(e));

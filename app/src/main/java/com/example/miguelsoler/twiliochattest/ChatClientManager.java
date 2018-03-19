@@ -3,7 +3,7 @@ package com.example.miguelsoler.twiliochattest;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.miguelsoler.twiliochattest.Conexion.TokenFetcher;
+import com.example.miguelsoler.twiliochattest.connection.TokenFetcher;
 import com.example.miguelsoler.twiliochattest.listeners.TaskCompletionListener;
 import com.twilio.accessmanager.AccessManager;
 import com.twilio.chat.CallbackListener;
@@ -77,10 +77,10 @@ public class ChatClientManager implements AccessManager.Listener, AccessManager.
   }
 
   private void buildClient(final String token, final TaskCompletionListener<Void, String> listener) {
-    chatClientBuilder.build(accessManager.getToken(), new TaskCompletionListener<ChatClient, String>() {
+    chatClientBuilder.build(token, new TaskCompletionListener<ChatClient, String>() {
       @Override
       public void onSuccess(ChatClient chatClient) {
-        Log.e("ChatClientManager", "buildClient token" + token);
+        Log.e("ChatClientManager", "buildClient onSuccess token" + token);
         ChatClientManager.this.chatClient = chatClient;
         listener.onSuccess(null);
       }

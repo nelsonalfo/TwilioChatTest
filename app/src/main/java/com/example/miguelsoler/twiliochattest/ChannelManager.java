@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class ChannelManager implements ChatClientListener {
-  private static ChannelManager sharedManager = new ChannelManager();
   public Channel generalChannel;
   private ChatClientManager chatClientManager;
   private ChannelExtractor channelExtractor;
@@ -34,17 +33,13 @@ public class ChannelManager implements ChatClientListener {
   private Handler handler;
   private Boolean isRefreshingChannels = false;
 
-  private ChannelManager() {
-    this.chatClientManager = TwilioChatApplication.get().getChatClientManager();
+  public ChannelManager(ChatClientManager chatClientManager) {
+    this.chatClientManager = chatClientManager;
     this.channelExtractor = new ChannelExtractor();
     this.listener = this;
     defaultChannelName = getStringResource(R.string.default_channel_name);
     defaultChannelUniqueName = getStringResource(R.string.default_channel_unique_name);
     handler = setupListenerHandler();
-  }
-
-  public static ChannelManager getInstance() {
-    return sharedManager;
   }
 
   public List<Channel> getChannels() {

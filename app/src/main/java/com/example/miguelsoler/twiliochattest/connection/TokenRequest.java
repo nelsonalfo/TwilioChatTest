@@ -1,4 +1,4 @@
-package com.example.miguelsoler.twiliochattest.Conexion;
+package com.example.miguelsoler.twiliochattest.connection;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
