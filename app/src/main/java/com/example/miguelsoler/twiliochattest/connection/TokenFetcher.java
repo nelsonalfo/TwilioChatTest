@@ -32,6 +32,8 @@ import java.util.Map;
 
 public class TokenFetcher {
     private String token;
+    public static String channel;
+    public static String identity;
 
     public void fetch(final TaskCompletionListener<String, String> listener) {
         String requestUrl = "http://staging.flyersconcierge.com/api/v1.47/twilio_token/16/diegoduncan21@gmail.com";
@@ -45,6 +47,8 @@ public class TokenFetcher {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             token = jsonObject.getString("token");
+                            identity = jsonObject.getString("identity");
+                            channel = jsonObject.getString("channel");
 
                         } catch (JSONException e) {
                             e.printStackTrace();

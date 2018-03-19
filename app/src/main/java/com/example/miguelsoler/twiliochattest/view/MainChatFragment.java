@@ -1,16 +1,16 @@
 package com.example.miguelsoler.twiliochattest.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.miguelsoler.twiliochattest.R;
@@ -31,10 +31,8 @@ import java.util.List;
 
 
 public class MainChatFragment extends Fragment implements ChannelListener {
-    Context context;
-    Activity mainActivity;
     Button sendButton;
-    ListView messagesListView;
+    RecyclerView messagesRecyclerView;
     EditText messageTextEdit;
 
     MessageAdapter messageAdapter;
@@ -51,8 +49,6 @@ public class MainChatFragment extends Fragment implements ChannelListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this.getActivity();
-        mainActivity = this.getActivity();
     }
 
     @Override
@@ -60,15 +56,40 @@ public class MainChatFragment extends Fragment implements ChannelListener {
         View view = inflater.inflate(R.layout.fragment_main_chat, container, false);
 
         sendButton = view.findViewById(R.id.buttonSend);
-        messagesListView = view.findViewById(R.id.listViewMessages);
+        messagesRecyclerView = view.findViewById(R.id.listViewMessages);
         messageTextEdit = view.findViewById(R.id.editTextMessage);
 
-        messageAdapter = new MessageAdapter(mainActivity);
-        messagesListView.setAdapter(messageAdapter);
+        setUpRecyclerView();
+
         setUpListeners();
+
         setMessageInputEnabled(false);
 
         return view;
+    }
+
+    private void setUpRecyclerView() {
+        messageAdapter = new MessageAdapter();
+        messagesRecyclerView.setAdapter(messageAdapter);
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setSmoothScrollbarEnabled(true);
+        messagesRecyclerView.setLayoutManager(layoutManager);
+
+        messagesRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop,
+                                       int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    messagesRecyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollToLastMessage();
+                        }
+                    }, 100);
+                }
+            }
+        });
     }
 
     @Override
@@ -122,12 +143,18 @@ public class MainChatFragment extends Fragment implements ChannelListener {
                 @Override
                 public void onSuccess(List<Message> messageList) {
                     messageAdapter.setMessages(messageList);
+                    scrollToLastMessage();
                     setMessageInputEnabled(true);
                     messageTextEdit.requestFocus();
                     handler.onSuccess();
                 }
             });
         }
+    }
+
+    private void scrollToLastMessage() {
+        int lastPosition = messageAdapter.getItemCount() - 1;
+        messagesRecyclerView.smoothScrollToPosition(lastPosition);
     }
 
     private void setUpListeners() {
@@ -157,7 +184,7 @@ public class MainChatFragment extends Fragment implements ChannelListener {
     }
 
     private void setMessageInputEnabled(final boolean enabled) {
-        mainActivity.runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 MainChatFragment.this.sendButton.setEnabled(enabled);
@@ -178,6 +205,8 @@ public class MainChatFragment extends Fragment implements ChannelListener {
     @Override
     public void onMessageAdded(Message message) {
         messageAdapter.addMessage(message);
+
+        scrollToLastMessage();
     }
 
     @Override

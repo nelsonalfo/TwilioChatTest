@@ -4,7 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listViewMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,10 @@
         android:layout_alignParentBottom="true"
         android:background="@color/login_tf_background_gray"
         android:orientation="horizontal"
-        android:paddingLeft="5dp">
+        android:paddingStart="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingEnd="5dp">
 
 
         <EditText
