@@ -113,7 +113,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
             @Override
             public void onRefresh() {
                 refreshLayout.setRefreshing(true);
-                refreshChannels();
             }
         });
 
@@ -173,21 +172,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
     private String getStringResource(int id) {
         Resources resources = getResources();
         return resources.getString(id);
-    }
-
-    private void refreshChannels() {
-        channelManager.populateChannels(new LoadChannelListener() {
-            @Override
-            public void onChannelsFinishedLoading(final List<Channel> channels) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        channelAdapter.setChannels(channels);
-                        refreshLayout.setRefreshing(false);
-                    }
-                });
-            }
-        });
     }
 
     private void populateChannels() {
@@ -391,7 +375,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
     @Override
     public void onChannelAdded(Channel channel) {
         System.out.println("Channel Added");
-        refreshChannels();
     }
 
     @Override
@@ -407,7 +390,6 @@ public class MainChatActivity extends AppCompatActivity implements ChatClientLis
             chatFragment.setCurrentChannel(null, null);
             setChannel(0);
         }
-        refreshChannels();
     }
 
     @Override

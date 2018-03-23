@@ -19,7 +19,8 @@ import java.util.TreeSet;
 
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int TYPE_MESSAGE = 0;
-    private final int TYPE_STATUS = 1;
+    private final int TYPE_MESSAGE_AFFILIATE = 1;
+    private final int TYPE_STATUS = 2;
 
     private List<ChatMessage> messages;
     private TreeSet<Integer> statusMessageSet = new TreeSet<>();
@@ -82,11 +83,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemViewType(int position) {
+
         if (statusMessageSet.contains(position)) {
             return TYPE_STATUS;
-        } else {
+        }
+
+        final UserMessage userMessage = (UserMessage) messages.get(position);
+        if (userMessage.isClientTheAuthor()) {
             return TYPE_MESSAGE;
         }
+
+        return TYPE_MESSAGE_AFFILIATE;
     }
 
     @Override
@@ -97,6 +104,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (viewType) {
             case TYPE_MESSAGE:
                 itemView = layoutInflater.inflate(R.layout.message, parent, false);
+                return new UserMessageViewHolder(itemView);
+            case TYPE_MESSAGE_AFFILIATE:
+                itemView = layoutInflater.inflate(R.layout.chat_message_affiliate, parent, false);
                 return new UserMessageViewHolder(itemView);
             case TYPE_STATUS:
                 itemView = layoutInflater.inflate(R.layout.status_message, parent, false);

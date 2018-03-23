@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:cardview-v7:26.1.0'
     implementation 'com.twilio:chat-android:2.0.8'
     implementation 'com.twilio:accessmanager-android:0.1.0'
     implementation 'com.mcxiaoke.volley:library-aar:1.0.1'
