@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.miguelsoler.twiliochattest.R;
 import com.example.miguelsoler.twiliochattest.messages.JoinedStatusMessage;
 import com.example.miguelsoler.twiliochattest.messages.LeftStatusMessage;
 import com.example.miguelsoler.twiliochattest.messages.StatusMessage;
+import com.example.miguelsoler.twiliochattest.messages.TypingStatusMessage;
 import com.example.miguelsoler.twiliochattest.view.adapter.MessageAdapter;
 import com.twilio.chat.CallbackListener;
 import com.twilio.chat.Channel;
@@ -31,6 +33,8 @@ import java.util.List;
 
 
 public class MainChatFragment extends Fragment implements ChannelListener {
+    private static final String TAG = MainChatFragment.class.getSimpleName();
+
     Button sendButton;
     RecyclerView messagesRecyclerView;
     EditText messageTextEdit;
@@ -222,7 +226,7 @@ public class MainChatFragment extends Fragment implements ChannelListener {
     @Override
     public void onMemberAdded(Member member) {
         StatusMessage statusMessage = new JoinedStatusMessage(member.getIdentity());
-        this.messageAdapter.addStatusMessage(statusMessage);
+        messageAdapter.addStatusMessage(statusMessage);
     }
 
     @Override
@@ -233,15 +237,25 @@ public class MainChatFragment extends Fragment implements ChannelListener {
     @Override
     public void onMemberDeleted(Member member) {
         StatusMessage statusMessage = new LeftStatusMessage(member.getIdentity());
-        this.messageAdapter.addStatusMessage(statusMessage);
+        messageAdapter.addStatusMessage(statusMessage);
+        scrollToLastMessage();
     }
 
     @Override
     public void onTypingStarted(Member member) {
+        Log.e(TAG, "onTypingStarted - member: " +  member.getIdentity());
+
+        final TypingStatusMessage message = new TypingStatusMessage(member.getIdentity());
+        messageAdapter.addStatusMessage(message);
+        scrollToLastMessage();
     }
 
     @Override
     public void onTypingEnded(Member member) {
+        Log.e(TAG, "onTypingEnded - member: " + member.getIdentity());
+
+        messageAdapter.removeStatusMessage();
+        scrollToLastMessage();
     }
 
     @Override

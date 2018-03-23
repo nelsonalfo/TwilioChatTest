@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="50dp"
+              xmlns:tools="http://schemas.android.com/tools"
               android:gravity="center"
               android:orientation="vertical"
               android:padding="1dp">
@@ -20,7 +21,10 @@
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif-thin"
         android:paddingLeft="15dp"
-        android:text="status message"
+        android:paddingStart="15dp"
+        android:paddingRight="15dp"
+        android:paddingEnd="15dp"
+        tools:text="status message"
         android:textColor="@color/status_text_color"
         android:textSize="14sp"/>
 

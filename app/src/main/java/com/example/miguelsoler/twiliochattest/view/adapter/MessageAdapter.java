@@ -22,7 +22,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final int TYPE_STATUS = 1;
 
     private List<ChatMessage> messages;
-    private TreeSet statusMessageSet = new TreeSet();
+    private TreeSet<Integer> statusMessageSet = new TreeSet<>();
 
 
     public MessageAdapter() {
@@ -45,7 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private void addUserMessage(List<ChatMessage> chatMessages, Message message) {
         UserMessage userMessage = new UserMessage(message);
-        if(isNotEmpty(TokenFetcher.identity) && TokenFetcher.identity.equals(message.getAuthor())){
+        if (isNotEmpty(TokenFetcher.identity) && TokenFetcher.identity.equals(message.getAuthor())) {
             userMessage.setClientAsTheAuthor();
         }
 
@@ -63,14 +63,30 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @SuppressWarnings("unchecked")
     public void addStatusMessage(StatusMessage message) {
+        int statusMessageIndex = messages.size();
+
+        statusMessageSet.add(statusMessageIndex);
         messages.add(message);
-        statusMessageSet.add(messages.size() - 1);
-        notifyItemInserted(messages.size());
+
+        notifyItemInserted(statusMessageIndex);
+    }
+
+    public void removeStatusMessage() {
+        int statusMessageIndex = statusMessageSet.last();
+
+        statusMessageSet.remove(statusMessageIndex);
+        messages.remove(statusMessageIndex);
+
+        notifyItemRemoved(statusMessageIndex);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return statusMessageSet.contains(position) ? TYPE_STATUS : TYPE_MESSAGE;
+        if (statusMessageSet.contains(position)) {
+            return TYPE_STATUS;
+        } else {
+            return TYPE_MESSAGE;
+        }
     }
 
     @Override
